@@ -83,7 +83,7 @@ const ListadoClientes = () => {
                     className="btn btn-danger btn-sm rounded-pill"
                     onClick={() => showDeleteConfirmation(user)}
                   >
-                    Borrar
+                    Dar de baja
                   </button>
                 </div>
               </td>
@@ -97,7 +97,7 @@ const ListadoClientes = () => {
           <Modal.Title>Confirmar Borrado</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Está seguro de que desea borrar al cliente?
+          ¿Está seguro de que desea dar de baja al cliente?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={confirmDelete}>
@@ -115,7 +115,7 @@ const ListadoClientes = () => {
           <Modal.Title>Éxito</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          El usuario ha sido borrado.
+          El cliente ha sido dado de baja correctamente.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={hideSuccess}>
