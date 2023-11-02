@@ -4,20 +4,27 @@ import { useParams, Link } from 'react-router-dom';
 const VerUsuario = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
-  const [accessDenied, setAccessDenied] = useState(true);
+  const [access, setAccess] = useState(null); // Inicializa access como null
 
   useEffect(() => {
-    // Aquí puedes agregar la lógica para verificar si el acceso está permitido.
-    // Por ejemplo, puedes comprobar si el usuario tiene los permisos adecuados.
-
     // Simulación de acceso denegado para este ejemplo.
     if (userId === 'denied') {
-      setAccessDenied(true);
+      setAccess(false); // Acceso denegado
     } else {
       // Realiza la solicitud para obtener la información del usuario.
       fetch(`http://localhost:8080/api/v0/subscriber/${userId}`)
         .then((response) => response.json())
-        .then((data) => setUser(data))
+        .then((data) => {
+          setUser(data);
+          // Actualiza el estado de access con el valor de pago correspondiente
+          fetch(`http://localhost:8080/api/v0/payments`)
+            .then((response) => response.json())
+            .then((payments) => {
+              const payment = payments.find((payment) => payment.subscriberId === data.id);
+              setAccess(payment ? payment.access : false);
+            })
+            .catch((error) => console.error('Error:', error));
+        })
         .catch((error) => console.error('Error:', error));
     }
   }, [userId]);
@@ -54,13 +61,13 @@ const VerUsuario = () => {
         <p>Cargando la información del usuario...</p>
       )}
       <div className="access-message">
-        {accessDenied ? (
-          <div className="alert alert-danger" role="alert">
-            Acceso denegado
-          </div>
-        ) : (
+        {access === true ? ( // Verificamos el estado de access
           <div className="alert alert-success" role="alert">
             Acceso permitido
+          </div>
+        ) : (
+          <div className="alert alert-danger" role="alert">
+            Acceso denegado
           </div>
         )}
       </div>
@@ -74,11 +81,3 @@ const VerUsuario = () => {
 };
 
 export default VerUsuario;
-
-
-
-
-
-
-
-

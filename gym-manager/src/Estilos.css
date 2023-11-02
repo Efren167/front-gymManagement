@@ -1,0 +1,73 @@
+/* App.css */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* Estilos para el contenido principal */
+.main-content {
+  flex: 1;
+  display: flex;
+}
+
+/* Estilos para la barra lateral */
+.sidebar {
+  width: 250px;
+  background-color: #00b894;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para el enlace "Alta Usuario" */
+.sidebar a.btn {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #00b894;
+  color: #fff;
+  text-decoration: none;
+  border: 2px solid #00b894;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar a.btn:hover {
+  background-color: #fff;
+  color: #00b894;
+}
+
+.icon {
+  font-size: 20px;
+  margin-right: 5px; 
+}
+
+/* En tu archivo de estilos CSS */
+.icon-no-background {
+  background: transparent;
+  border: none;
+}
+
+.icon-no-background:hover {
+  background: transparent; /* Si deseas conservar el estilo cuando el botón está en estado hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

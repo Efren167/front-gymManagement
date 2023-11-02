@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 const EditarUsuario = () => {
-  const { id } = useParams(); // Obtener el ID del usuario desde los parámetros de la URL
+  const { userId} = useParams();
   const navigate = useNavigate();
 
-  // Estado para almacenar los datos del usuario
   const [user, setUser] = useState({
-    nombre: 'Juan',
-    apellidos: 'Pérez',
-    dni: '12345678',
-    email: 'juan@example.com',
-    telefono: '123-456-7890',
+    nombre: '',
+    apellidos: '',
+    dni: '',
+    email: '',
+    telefono: '',
   });
 
-  // Estado para mostrar el modal de confirmación
   const [showConfirmation, setShowConfirmation] = useState(false);
-
-  // Estado para mostrar el modal de éxito
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Función para abrir el modal de confirmación
@@ -33,17 +29,46 @@ const EditarUsuario = () => {
     setShowConfirmation(false);
   };
 
-  // Función para actualizar los datos del usuario
+  // Función para realizar la solicitud GET con fetch y actualizar los datos del usuario
   const handleUpdateUser = () => {
-    // Simulación de solicitud PUT para actualizar los datos del usuario
-    // Reemplaza esto con tu lógica de solicitud real
+    fetch(`http://localhost:8080/api/v0/subscriber/${userId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((userData) => {
+        setUser(userData);
 
-    // Cierra el modal de confirmación
-    setShowConfirmation(false);
+        // Cierra el modal de confirmación
+        setShowConfirmation(false);
 
-    // Muestra el modal de éxito
-    setShowSuccess(true);
+        // Muestra el modal de éxito
+        setShowSuccess(true);
+      })
+      .catch((error) => {
+        console.error('Error al obtener los datos del usuario', error);
+      });
   };
+
+  useEffect(() => {
+    // Realiza una solicitud GET al cargar el componente para obtener los datos del usuario
+    fetch(`http://localhost:8080/api/v0/subscriber/${userId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((userData) => {
+        setUser(userData);
+      })
+      .catch((error) => {
+        console.error('Error al obtener los datos del usuario', error);
+      });
+  }, [userId]);
+
 
   // Función para cerrar el modal de éxito
   const handleCloseSuccess = () => {
@@ -69,7 +94,7 @@ const EditarUsuario = () => {
             className="form-control"
             id="nombre"
             name="nombre"
-            value={user.nombre}
+            value={user.name}
             readOnly
             style={{ backgroundColor: '#f2f2f2' }}
           />
@@ -83,7 +108,7 @@ const EditarUsuario = () => {
             className="form-control"
             id="apellidos"
             name="apellidos"
-            value={user.apellidos}
+            value={user.surname}
             readOnly
             style={{ backgroundColor: '#f2f2f2' }}
           />
@@ -124,7 +149,7 @@ const EditarUsuario = () => {
             className="form-control"
             id="telefono"
             name="telefono"
-            value={user.telefono}
+            value={user.phone}
             onChange={(e) => setUser({ ...user, telefono: e.target.value })}
           />
         </div>
@@ -175,6 +200,8 @@ const EditarUsuario = () => {
 };
 
 export default EditarUsuario;
+
+
 
 
 
